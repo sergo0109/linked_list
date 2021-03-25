@@ -1,0 +1,93 @@
+#ifndef List
+#define List
+#include <iostream>
+
+template <typename T>
+struct list_node
+{
+    T data;
+    list_node<T>* next;
+};
+
+
+template <typename T>
+class list
+{
+public:
+    void push_back(const T &data);
+    void push_front(const T &data);
+    void insert(const T &data,int index);
+    void print();
+    
+private:
+    list_node<T>* head = nullptr;
+    
+};
+
+
+template <typename T>
+void list<T>::push_back(const T &data){
+    list_node<T>* node = new list_node<T>;
+    node->data = data;
+    node->next = nullptr;
+    if(head==nullptr){
+        head=node;
+        return;
+    };
+    list_node<T>* temp = head;
+    while (temp->next!=nullptr){
+        temp = temp->next;
+    };
+    temp->next = node;
+}
+
+template <typename T>
+void list<T>::push_front(const T &data){
+    list_node<T>* node = new list_node<T>;
+    node->data = data;
+    node->next = head;
+    head=node;
+}
+
+template <typename T>
+void list<T>::insert(const T &data,int index){
+    if(index<0){
+        std::cout<<"you give invalid value of index"<<std::endl;
+        return;
+    }
+    if(index==0){
+        push_front(data);
+        return ;
+    }
+    if(head == nullptr){
+        std::cout<<"list_node is empty"<<std::endl;
+        return;
+    }
+    int count=0;
+    list_node<T>* temp = head;
+    while (temp->next!=nullptr) {
+        if(count == (index-1)){
+            list_node<T>* node = new list_node<T>;
+            node->data = data;
+            node->next = temp->next;
+            temp->next = node;
+            return;
+        };
+        temp = temp->next;
+        ++count;
+    };
+    if(index > count){
+        std::cout<<"you give bigger index then the size of list_node"<<std::endl;
+    };
+}
+
+template <typename T>
+void list<T>::print(){
+    list_node<T>* temp = head;
+    while (temp!=nullptr) {
+        std::cout<< temp->data <<std::endl;
+        temp = temp->next;
+    }
+}
+
+#endif/*List*/
